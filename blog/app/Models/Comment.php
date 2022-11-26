@@ -11,4 +11,9 @@ class Comment extends Model
 
     protected $table = 'comments';
     protected $guarded = false;
+
+    public function article()
+    {
+        return $this->belongsTo(Article::class);
+    }
 }

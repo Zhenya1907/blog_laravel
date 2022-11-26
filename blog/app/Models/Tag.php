@@ -11,4 +11,9 @@ class Tag extends Model
 
     protected $table = 'tags';
     protected $guarded = false;
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class);
+    }
 }

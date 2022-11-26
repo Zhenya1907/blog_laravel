@@ -11,4 +11,14 @@ class Article extends Model
 
     protected $table = 'articles';
     protected $guarded = false;
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
