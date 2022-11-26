@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ArticleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [ArticleController::class, 'index'])->name('index');
+Route::get('/tags', [ArticleController::class, 'tags']);
+Route::get('/{article}', [ArticleController::class, 'article'])->name('show_one_article');
+Route::post('/{article}/comments', [ArticleController::class, 'pushComment'])->name('add_comment');
