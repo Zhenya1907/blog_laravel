@@ -14,7 +14,7 @@ use App\Http\Controllers\ArticleController;
 */
 
 
-Route::get('/', [ArticleController::class, 'index'])->name('index');
-Route::get('/tags', [ArticleController::class, 'tags']);
+Route::get('/main', [ArticleController::class, 'index'])->name('index');
+Route::get('/pagination', [ArticleController::class, 'ajaxPagination'])->name('pagination');
 Route::get('/{article}', [ArticleController::class, 'article'])->name('show_one_article');
 Route::post('/{article}/comments', [ArticleController::class, 'pushComment'])->name('add_comment');

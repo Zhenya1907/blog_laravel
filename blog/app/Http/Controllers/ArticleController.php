@@ -25,28 +25,23 @@ class ArticleController extends Controller
             return $query->where('title', 'like', '%' . $request->get('q') . '%');
         })->get();
 
-        return view('app.index', compact('articles', 'tags'));
-    }
-
-    public function tags()
-    {
         $popularArticleIds = DB::table('comments')
             ->select('articles.id', DB::raw('count(*) as c'))
             ->join('articles', 'articles.id', '=', 'comments.article_id')
             ->groupBy('articles.id')
             ->orderByDesc('c')
-            ->limit(3)
+            ->limit(2)
             ->get()
             ->pluck('id');
 
-        $tags = Tag::query()
+        $popularTags = Tag::query()
             ->join('article_tag', 'article_tag.tag_id', '=', 'tags.id')
             ->select('tags.*')
             ->distinct()
             ->whereIn('article_tag.article_id', $popularArticleIds)
             ->get();
 
-        return view('app.tags', compact('tags'));
+        return view('app.index', compact('articles', 'tags', 'popularTags'));
     }
 
     public function article(Article $article)
@@ -58,5 +53,13 @@ class ArticleController extends Controller
     {
         Comment::create(['content' => $request->get('content'), 'article_id' => $article->id]);
         return back();
+    }
+
+    public function ajaxPagination(Request $request)
+    {
+        if ($request->ajax()) {
+            $articles = Article::paginate(4);
+            return view('app.pagination', compact('articles'))->render();
+        }
     }
 }
